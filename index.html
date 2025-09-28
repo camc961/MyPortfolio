@@ -1,328 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>portfolio</title>
-  <!-- fonts (optional, safe everywhere) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg: #152c89;
-      --bg2: #0e1016;
-      --card: #11141b;
-      --muted: #9aa4b2;
-      --text: #e6e8eb;
-      --accent: #7c3aed; /* violet */
-      --accent2:#22d3ee; /* cyan */
-      --maxw: 1100px;
-      --radius: 16px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --border: rgba(255,255,255,.08);
+      --bg:#ffffff; --text:#0f0f0f; --muted:#5b6472; --card:#f4f5f7;
+      --accent:#7c3aed; --radius:12px; --maxw:960px; --border:#e6e8ee;
     }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    [data-theme="dark"]{
+      --bg:#0f0f0f; --text:#f5f7fb; --muted:#b7c0cc; --card:#17191d;
+      --accent:#22d3ee; --border:#262a32;
+    }
+
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
     body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(60rem 60rem at 110% -10%, rgba(124,58,237,.18), transparent 60%),
-        radial-gradient(60rem 60rem at -10% 110%, rgba(34,211,238,.18), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
+      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:var(--bg); color:var(--text); line-height:1.6;
     }
 
     /* header */
     header{
-      position:sticky; top:0; z-index:40;
-      backdrop-filter: blur(10px);
-      background: rgba(11,12,16,.7);
-      border-bottom: 1px solid var(--border);
+      position:sticky; top:0; z-index:10; background:var(--bg);
+      border-bottom:1px solid var(--border);
     }
-    .nav{
-      max-width:var(--maxw);
-      margin:0 auto; padding:14px 20px;
-      display:flex; align-items:center; justify-content:space-between;
-    }
-    .brand{display:flex; align-items:center; gap:10px; font-weight:800}
-    .logo{
-      width:34px; height:34px; display:grid; place-items:center;
-      border-radius:10px;
-      background:linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: var(--shadow);
-      color:#fff; font-weight:800;
-    }
-    nav a{color:var(--text); text-decoration:none; opacity:.9; font-weight:600}
-    .links{display:flex; gap:18px}
+    .nav{max-width:var(--maxw); margin:0 auto; padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{font-weight:700}
+    .links{display:flex; align-items:center; gap:16px}
+    .links a{color:var(--text); text-decoration:none; font-weight:600}
     .btn{
-      padding:10px 14px; border-radius:12px;
-      border:1px solid rgba(124,58,237,.4);
-      background:rgba(124,58,237,.12);
-      color:var(--text); font-weight:700;
-      box-shadow:0 6px 20px rgba(124,58,237,.25);
-      text-decoration:none; display:inline-block;
-    }
-    .btn:hover{transform:translateY(-1px)}
-
-    /* layout */
-    .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
-    section{padding:72px 0}
-
-    /* hero */
-    .hero{display:grid; grid-template-columns:1fr; gap:28px; align-items:center}
-    .hero h1{font-size:clamp(28px, 4vw, 52px); line-height:1.08; margin:0 0 12px 0}
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px; border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      font-weight:600; font-size:14px;
-    }
-    .hero p{color:var(--muted); font-size:clamp(15px, 1.8vw, 18px)}
-    .cta{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
-
-    /* cards, chips, grids */
-    .card{
-      background: linear-gradient(180deg, rgba(17,20,27,.96), rgba(10,12,18,.96));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px; box-shadow: var(--shadow);
-    }
-    .chips{display:flex; flex-wrap:wrap; gap:10px}
-    .chip{
-      padding:8px 12px; border-radius:999px;
-      background:rgba(255,255,255,.04); border:1px solid var(--border);
-      font-weight:600;
-    }
-    .stitle{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px}
-    .stitle h2{font-size:clamp(22px, 3vw, 32px); margin:0}
-    .stitle p{margin:0; color:var(--muted)}
-
-    /* timeline style list */
-    .timeline{position:relative; padding-left:0; list-style:none; margin:0}
-    .timeline li{
-      position:relative; padding-left:42px; margin:0 0 16px 0;
-    }
-    .timeline li::before{
-      content:""; position:absolute; left:14px; top:8px; width:14px; height:14px;
-      border-radius:50%; background:linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow:0 0 0 4px rgba(255,255,255,.03);
-    }
-    .timeline li::after{
-      content:""; position:absolute; left:20px; top:28px; bottom:-8px; width:2px;
-      background: linear-gradient(180deg, rgba(124,58,237,.8), rgba(124,58,237,0));
-    }
-    .timeline h3{margin:0 0 4px 0; font-size:18px}
-    .meta{color:var(--muted); font-size:14px; margin-bottom:8px}
-
-    /* footer */
-    footer{border-top:1px solid var(--border); padding:28px 0 60px}
-    .foot{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; color:var(--muted)}
-
-    /* inputs */
-    input, textarea{
-      width:100%; background: rgba(255,255,255,.04);
-      border:1px solid var(--border); border-radius:12px;
-      padding:12px 14px; color:var(--text); font:inherit;
-    }
-    input::placeholder, textarea::placeholder{color:#b6beca}
-
-    /* responsive tweaks (optional: keep simple layout single-column anyway) */
-    @media (min-width: 900px){
-      .hero{grid-template-columns: 1fr 1fr}
-    }
-  </style>
-</head>
-<body>
-  <!-- Header -->
-  <header>
-    <div class="nav">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">c</div>
-        <a href="#home" aria-label="home" style="text-decoration:none;color:var(--text)">portfolio</a>
-      </div>
-      <nav class="links" aria-label="primary">
-        <a href="#skills">skills</a>
-        <a href="#awards">awards</a>
-        <a href="#experience">experience</a>
-        <a href="#education">education</a>
-        <a href="#contact" class="btn">contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main -->
-  <main id="home" class="wrap">
-    <!-- Hero -->
-    <section class="hero">
-      <div>
-        <span class="badge">student • peer math support</span>
-        <h1>welcome</h1>
-        <p>I simplify Algebra I and Geometry with clear explanations and analogies. below is a quick snapshot of what I do and what I’ve done.</p>
-        <div class="cta">
-          <a class="btn" href="#experience">see my work</a>
-          <a class="btn" href="#contact" style="border:1px dashed rgba(124,58,237,.6)">get in touch</a>
-        </div>
-      </div>
-      <div class="card" aria-label="quick profile">
-        <h3 style="margin:0 0 8px">highlights</h3>
-        <ul style="margin:0; padding-left:18px; line-height:1.7; color:var(--muted)">
-          <li>effective communicator & listener</li>
-          <li>reliable & organized</li>
-          <li>positive & enthusiastic</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills">
-      <div class="stitle">
-        <h2>skills</h2>
-        <p>the stuff i’m actually good at</p>
-      </div>
-      <div class="card">
-        <div class="chips" aria-label="skill chips">
-          <span class="chip">Algebra I</span>
-          <span class="chip">Geometry</span>
-          <span class="chip">explaining with analogies</span>
-          <span class="chip">active listening</span>
-          <span class="chip">clear communication</span>
-          <span class="chip">organization</span>
-          <span class="chip">positive mindset</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Awards -->
-    <section id="awards">
-      <div class="stitle">
-        <h2>awards & recognition</h2>
-        <p>leadership • service • academics</p>
-      </div>
-      <div class="card">
-        <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.7">
-          <li>National Honor Society</li>
-          <li>Beta Club</li>
-          <li>Honor Roll</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section id="experience">
-      <div class="stitle">
-        <h2>experience</h2>
-        <p>where i’ve practiced and helped</p>
-      </div>
-      <div class="card">
-        <ul class="timeline">
-          <li>
-            <h3>Peer Math Support</h3>
-            <div class="meta">aug 2023 — present</div>
-            <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.7">
-              <li>helped with Algebra I & Geometry assignments, fostering collaborative learning.</li>
-              <li>simplified challenging concepts using analogies to boost confidence.</li>
-            </ul>
-          </li>
-          <li>
-            <h3>Mathnasium Alumni</h3>
-            <div class="meta">aug 2021 — aug 2024</div>
-            <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.7">
-              <li>experienced individualized teaching methods and strong problem-solving routines.</li>
-              <li>built a solid math foundation and enthusiasm for the subject.</li>
-            </ul>
-          </li>
-          <li>
-            <h3>Babysitter</h3>
-            <div class="meta">aug 2023 — present</div>
-            <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.7">
-              <li>supervised kids (3–10), ensured safety and well-being.</li>
-              <li>assisted with homework and encouraged a positive attitude toward learning.</li>
-              <li>managed routines like meals and activities with strong organization.</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Education -->
-    <section id="education">
-      <div class="stitle">
-        <h2>education</h2>
-        <p>keep it minimal — no personal details</p>
-      </div>
-      <div class="card">
-        <p style="color:var(--muted)">add coursework, certificates, or interests here (optional).</p>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact">
-      <div class="stitle">
-        <h2>contact</h2>
-        <p>let’s work together</p>
-      </div>
-      <div class="card">
-        <form id="contactForm" autocomplete="on">
-          <div style="display:grid; gap:12px; grid-template-columns:1fr 1fr">
-            <input required name="name" placeholder="your name" aria-label="your name" />
-            <input required type="email" name="email" placeholder="email" aria-label="your email" />
-          </div>
-          <div style="margin-top:12px">
-            <textarea required name="message" rows="5" placeholder="tell me about your project or tutoring needs…" aria-label="your message"></textarea>
-          </div>
-          <div style="display:flex; gap:10px; align-items:center; margin-top:12px">
-            <button class="btn" type="submit">send</button>
-            <span id="status" aria-live="polite" style="color:var(--muted)"></span>
-          </div>
-        </form>
-        <div style="margin-top:14px; color:var(--muted)">
-          prefer email? <span>(add your address here if you want)</span>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <div class="wrap foot">
-      <span>© <span id="year"></span> portfolio • all rights reserved</span>
-      <span>built to be semantic • accessible • responsive</span>
-    </div>
-  </footer>
-
-  <script>
-    // set year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // simple demo form handler (no backend)
-    const form = document.getElementById('contactForm');
-    const statusEl = document.getElementById('status');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form));
-      if(!data.name || !data.email || !data.message){
-        statusEl.textContent = 'please fill out all fields.';
-        return;
-      }
-      statusEl.textContent = 'message ready — demo only (no email sent)';
-      form.reset();
-    });
-
-    // lil reveal on scroll without libraries
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.animate(
-            [{opacity:0, transform:'translateY(8px)'},{opacity:1, transform:'translateY(0)'}],
-            {duration:500, easing:'cubic-bezier(.2,.7,.2,1)', fill:'both'}
-          );
-          observer.unobserve(entry.target);
-        }
-    }, {threshold:.15});
-    document.querySelectorAll('section .card, .chips, .timeline li').forEach(el=>observer.observe(el));
-  </script>
-</body>
-</html>
+      appearance:none; border:1px solid var(--border); background:var(--card);
+      color:var(--text); padding:8px 12px; border-radius:var(--radius); font-
