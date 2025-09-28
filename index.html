@@ -6,31 +6,157 @@
   <title>portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
+    :root {
       --bg:#ffffff; --text:#0f0f0f; --muted:#5b6472; --card:#f4f5f7;
-      --accent:#7c3aed; --radius:12px; --maxw:960px; --border:#e6e8ee;
+      --accent:#7c3aed; --radius:12px; --border:#e6e8ee;
     }
-    [data-theme="dark"]{
+    [data-theme="dark"] {
       --bg:#0f0f0f; --text:#f5f7fb; --muted:#b7c0cc; --card:#17191d;
       --accent:#22d3ee; --border:#262a32;
     }
 
     *{box-sizing:border-box} html{scroll-behavior:smooth}
     body{
-      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      margin:0; font-family:Inter, sans-serif;
       background:var(--bg); color:var(--text); line-height:1.6;
     }
 
-    /* header */
     header{
-      position:sticky; top:0; z-index:10; background:var(--bg);
+      position:sticky; top:0; z-index:10;
+      background:var(--bg);
       border-bottom:1px solid var(--border);
     }
-    .nav{max-width:var(--maxw); margin:0 auto; padding:14px 18px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .nav{
+      max-width:960px; margin:0 auto; padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
     .brand{font-weight:700}
-    .links{display:flex; align-items:center; gap:16px}
+    .links{display:flex; gap:16px; align-items:center}
     .links a{color:var(--text); text-decoration:none; font-weight:600}
-    .btn{
-      appearance:none; border:1px solid var(--border); background:var(--card);
-      color:var(--text); padding:8px 12px; border-radius:var(--radius); font-
+
+    .toggle{
+      border:1px solid var(--border); background:var(--card);
+      color:var(--text); padding:6px 12px; border-radius:var(--radius);
+      cursor:pointer; font-weight:600;
+    }
+    .toggle:hover{background:var(--accent); color:#fff}
+
+    main{max-width:960px; margin:0 auto; padding:24px 18px}
+    section{margin:40px 0}
+    h1,h2{margin:0 0 12px}
+    .card{background:var(--card); border:1px solid var(--border);
+      border-radius:var(--radius); padding:16px; margin-top:10px}
+    .chips{display:flex; flex-wrap:wrap; gap:8px}
+    .chip{border:1px solid var(--border); background:transparent;
+      padding:6px 10px; border-radius:999px; font-weight:600; color:var(--text)}
+    footer{border-top:1px solid var(--border); color:var(--muted);
+      text-align:center; padding:28px 18px}
+  </style>
+  <script>
+    (() => {
+      const saved = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const start = saved || (prefersDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", start);
+    })();
+  </script>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">portfolio</div>
+      <div style="display:flex; align-items:center; gap:24px">
+        <nav class="links">
+          <a href="#skills">skills</a>
+          <a href="#awards">awards</a>
+          <a href="#projects">projects</a>
+          <a href="#contact">contact</a>
+        </nav>
+        <!-- toggle is separate on the far right -->
+        <button id="themeToggle" class="toggle">dark mode</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero">
+      <h1>welcome</h1>
+      <p>i make tricky math feel easy — clear explanations, analogies, and organized study vibes.</p>
+    </section>
+
+    <section id="skills">
+      <h2>skills</h2>
+      <div class="card">
+        <div class="chips">
+          <span class="chip">algebra i</span>
+          <span class="chip">geometry</span>
+          <span class="chip">explain w/ analogies</span>
+          <span class="chip">active listening</span>
+          <span class="chip">organization</span>
+          <span class="chip">positive attitude</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="awards">
+      <h2>awards & recognition</h2>
+      <div class="card">
+        <ul>
+          <li>national honor society</li>
+          <li>beta club</li>
+          <li>honor roll</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>projects</h2>
+      <div class="card">
+        <p>example project description goes here — study guides, math explainers, or anything you’ve created.</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>contact</h2>
+      <div class="card">
+        <form id="contactForm">
+          <input type="text" placeholder="your name" required style="width:100%;margin-bottom:0.5rem;padding:0.5rem;border-radius:var(--radius);border:1px solid var(--border)">
+          <input type="email" placeholder="your email" required style="width:100%;margin-bottom:0.5rem;padding:0.5rem;border-radius:var(--radius);border:1px solid var(--border)">
+          <textarea placeholder="your message" required rows="4" style="width:100%;padding:0.5rem;border-radius:var(--radius);border:1px solid var(--border)"></textarea>
+          <button type="submit" class="toggle" style="margin-top:0.5rem;">send</button>
+          <span id="status" style="margin-left:10px; color:var(--muted)"></span>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>© <span id="year"></span> portfolio • all rights reserved</footer>
+
+  <script>
+    // year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // theme toggle
+    const btn = document.getElementById("themeToggle");
+    function currentTheme(){ return document.documentElement.getAttribute("data-theme"); }
+    function setTheme(mode){
+      document.documentElement.setAttribute("data-theme", mode);
+      localStorage.setItem("theme", mode);
+      btn.textContent = mode === "dark" ? "light mode" : "dark mode";
+    }
+    setTheme(currentTheme());
+    btn.addEventListener("click", ()=> {
+      setTheme(currentTheme() === "dark" ? "light" : "dark");
+    });
+
+    // fake form handler
+    const form = document.getElementById("contactForm");
+    const status = document.getElementById("status");
+    form.addEventListener("submit", (e)=>{
+      e.preventDefault();
+      status.textContent = "message ready — demo only";
+      form.reset();
+    });
+  </script>
+</body>
+</html>
